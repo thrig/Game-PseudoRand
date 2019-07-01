@@ -5,8 +5,8 @@ Makefile.PL
 README
 eg/runstats
 eg/trial
-lib/Game/PseudoRand.pm
 t/00-load.t
-t/Game-PseudoRand.t
+t/bistep-bitable.t
 t/pod-coverage.t
 t/pod.t
+t/step-table.t
