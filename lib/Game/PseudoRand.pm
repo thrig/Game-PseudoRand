@@ -13,7 +13,7 @@ require Exporter;
 our @ISA       = qw(Exporter);
 our @EXPORT_OK = qw(prd_bistep prd_step prd_bitable prd_table);
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 sub HIT ()  { 1 }
 sub MISS () { 0 }
