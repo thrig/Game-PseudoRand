@@ -1,5 +1,9 @@
 Revision history for Game-PseudoRand
 
+0.04    ????-??-??
+        More eg/ scripts. Pull eg/ from CPAN dist, get those from git
+        repo if needed.
+
 0.03    2019-07-02
         Not shipping the *.pm file seems problematic.
 
@@ -8,4 +12,3 @@ Revision history for Game-PseudoRand
 
 0.01    2019-07-01
         First version, released on an unsuspecting world.
-

@@ -4,8 +4,6 @@ MANIFEST
 Makefile.PL
 README
 lib/Game/PseudoRand.pm
-eg/runstats
-eg/trial
 t/00-load.t
 t/bistep-bitable.t
 t/pod-coverage.t

@@ -1,0 +1,78 @@
+#!/usr/bin/env perl
+#
+# study particular values to prd_bistep for food generation in a
+# hypothetical game
+#
+#   make depend
+#   perl food
+
+use 5.10.0;
+use warnings;
+
+use Game::PseudoRand qw(prd_bistep);
+use Statistics::Lite qw(sum statshash);
+
+my ( $food, $reset ) = prd_bistep(
+    start     => 0.853,
+    step_hit  => -0.491,
+    step_miss => 0.251,
+);
+
+my $trials = 1e4;
+my $game_levels = 25;
+
+printf "odds of food gen %.2f\n", odds_for( $food, $trials ) * 100;
+&$reset;
+
+sub odds_for {
+    my $fn     = shift;
+    my $trials = shift // 1e3;
+    my $hits   = 0;
+    for ( 1 .. $trials ) {
+        $hits++ if $fn->();
+    }
+    return $hits / $trials;
+}
+
+my @rations;
+my %table;
+
+for ( 1 .. $trials ) {
+    my @food = foodalloc();
+    my $run  = 0;
+    my $rats = 0;
+    for my $f (@food) {
+        if ( $f == 0 ) {
+            $run++;
+        } else {
+            $table{$run}++;
+            $run = 0;
+            $rats++;
+        }
+    }
+    push @rations, $rats;
+    &$reset;
+}
+
+sub foodalloc {
+    my @levels;
+    for my $level ( 1 .. $game_levels ) {
+        push @levels, &$food;
+    }
+    return @levels;
+}
+
+say "longest run of levels without food";
+my $s = sum values %table;
+$_ /= $s for values %table;
+my $running = 0;
+for my $k ( sort { $a <=> $b } keys %table ) {
+    my $odds = $table{$k} * 100;
+    $running += $odds;
+    printf "%d\t%.1f\t%.1f\n", $k, $odds, $running;
+}
+
+say "in $game_levels levels generated on average";
+my %stats = statshash @rations;
+say join ' ', map { "$_=$stats{$_}" } qw(min mode mean max range stddev);
+say "rations";

@@ -13,7 +13,7 @@ require Exporter;
 our @ISA       = qw(Exporter);
 our @EXPORT_OK = qw(prd_bistep prd_step prd_bitable prd_table);
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 sub HIT ()  { 1 }
 sub MISS () { 0 }
@@ -132,7 +132,7 @@ Game::PseudoRand - pseudo random distribution functions
 
 =head1 SYNOPSIS
 
-  use Game::PseudoRand qw(prd_step prd_table);
+  use Game::PseudoRand qw(prd_step prd_table prd_bistep prd_bitable);
 
   ( $coinflip, $reset ) = prd_step( start => 0.25, step => 0.41675 );
 
@@ -147,9 +147,9 @@ Game::PseudoRand - pseudo random distribution functions
     prd_table( start => 0.12, table => [ 0.05, 0.05, 0.1 ] );
 
   $food = ( prd_bistep(
-    start     =>  0.5,
-    step_hit  => -0.4,
-    step_miss =>  0.1
+    start     =>  0.853,
+    step_hit  => -0.491,
+    step_miss =>  0.251
   ) )[0]; 
 
   ... = prd_bitable(
@@ -157,6 +157,9 @@ Game::PseudoRand - pseudo random distribution functions
     table_hit  => [ -0.1, -0.2 ],
     table_miss => [  0.1,  0.2 ]
   )
+
+See the C<eg/> and C<t/> directories in the repository for more
+example code.
 
 =head1 DESCRIPTION
 
@@ -302,6 +305,12 @@ This can be avoided (especially with B<prd_table>) by setting low
 initial odds so that the odds of a miss are very high after a hit,
 though this then may require a large increase in odds to keep the
 variance low, if that is also desired.
+
+Inputs that change the odds by large amounts may create problems: with
+B<prd_bistep> if the roll is lucky and hits at 0.01% odds a large
+I<step_hit> penalty may result in a string of misses until the odds turn
+positive sometime later. An implementation may need to constrain the
+odds to be somewhere near 0.0 to 1.0 if this is a problem.
 
 =head1 BUGS
 

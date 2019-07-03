@@ -1,0 +1,2 @@
+requires 'Game::PseudoRand', '>= 0.03';
+requires 'Statistics::Lite';
